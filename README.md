@@ -1,0 +1,1 @@
+# vsc-software-structure
