@@ -1,0 +1,16 @@
+{
+  "name": "03-exercise",
+  "version": "1.0.0",
+  "description": "some tests for my course fs, assert, path",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dawn Mathews",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "pg": "^7.14.0"
+  }
+}

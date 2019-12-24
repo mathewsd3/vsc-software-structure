@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Web page client of 03-exercise microservice</title>
+</head>
+
+<body>
+    <p>Show a list of all users : </p><button id="all_users_button">Get all users</button> <br>
+    <p>Search for a user with id: </p><input type="text" id="selected_user_id" placeholder="search with id"><br>
+    <p>Delete user with id : </p><input type="text" id="delete_user_id" placeholder="delete user"><br>
+    <br>
+    <p>Insert into database : </p><br>
+    Username : <input type="text" id="username" name="username" placeholder="Enter username"><br>
+    Password : <input type="text" id="password" name="password" placeholder="Enter password"><br>
+    <button id="add_user">add user</button>
+
+
+    <div id="message_div">Server Messages</div>
+    <div id="data_div">Data from server</div>
+
+    <!-- all script at the bottom for faster page view, while scripts are loading -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            // ALL USERS BUTTON EVENT HANDLER
+            $("#all_users_button").click(function () {
+                // code for ajax call to server
+                $.get("http://localhost:3001/users", function (data, status, xhr) {
+                    // wait fo results...
+                    // display message in html div's
+                    console.log(xhr)
+                    $("#message_div").html(xhr.status)
+                    $("#data_div").html(data)
+                });
+            });
+
+            /*
+            // select one USER EVENT HANDLER
+            $("#selected_user_id").change(function () {
+                var the_id = $("#selected_user_id").val()
+                $("#data_div").html("Waiting for server reply")
+                $("#message_div").html("no code")
+                $.get("http://localhost:3000/users/" + the_id, function (data, status) {
+                    $("#message_div").html(status)
+                    // $("#data_div").html("Server reply received")
+                    // build html ouput for data_div
+                    var html_str = "id " + data.data[0].id + "<br>"
+                    html_str += "username " + data.data[0].username + "<br>"
+                    html_str += "password " + data.data[0].password + "<br>"
+                    $("#data_div").html(html_str)
+                });
+            });
+            */
+            // select one USER EVENT HANDLER
+            $("#selected_user_id").change(function () {
+                var the_id = $("#selected_user_id").val()
+                $("#data_div").html("Waiting for server reply")
+                $("#message_div").html("no code")
+                /*
+                $.get("http://localhost:3000/users/" + the_id, function (data, status) {
+                    $("#message_div").html(status)
+                    // $("#data_div").html("Server reply received")
+                    // build html ouput for data_div
+                    var html_str = "id " + data.data[0].id + "<br>"
+                    html_str += "username " + data.data[0].username + "<br>"
+                    html_str += "password " + data.data[0].password + "<br>"
+                    $("#data_div").html(html_str)
+                });
+                */
+                $.ajax({
+                    url: "http://localhost:3001/users/" + the_id,
+                    type: 'GET',
+                    dataType: 'json', // added data type
+                    success: function (data, status) {
+                        $("#message_div").html(status)
+                        var html_str = "id " + data.data[0].id + "<br>"
+                        html_str += "username is: " + data.data[0].username + "<br>"
+                        html_str += "password is: " + data.data[0].password + "<br>"
+                        $("#data_div").html(html_str)
+                        console.log(data.data[0].username)
+                    }
+                });
+            });
+
+            // delete one USER EVENT HANDLER
+            $("#delete_user_id").change(function () {
+                var the_id = $("#delete_user_id").val()
+                //$("#data_div").html("Waiting for server reply")
+                //$("#message_div").html("no code")
+                $.ajax({
+                    url: "http://localhost:3001/users/" + the_id,
+                    type: 'DELETE',
+                    dataType: 'json', // added data type
+                    success: function (data, status) {
+                        $("#message_div").html(status)
+                        console.log(data)
+                        //console.log(message)
+                        //console.log(data.data[0])
+                        console.log(data.message)
+                        console.log(data.value)
+                        //var html_str = JSON.stringify(data.)
+                        $("#data_div").html(data.message)
+                        $("#message_div").html(data.value)
+                    },
+                    error: function (data, status) {
+                        console.log(data.responseText)
+                        console.log(data.responseJSON)
+                        console.log(data.status)
+                        $("#message_div").html("Row not found")
+                        $("#data_div").html("Error -- deletion unsuccessful")
+                    }
+                });
+            });
+
+            // Insert one user event handler
+            $("#add_user").click(function () {
+                console.log("-------------------------")
+                $.ajax({
+                    url: "http://localhost:3001/users",
+                    type: 'POST',
+                    data: {
+                        username: $("#username").val(),
+                        password: $("#password").val(),
+                    },
+                    //dataType: 'text', // added data type
+                    //ContentType: 'application/x-www-form-urlencoded',
+                    success: function (data, status) {
+                        $("#message_div").html(status)
+                        console.log(data)
+                        //console.log(message)
+                        //console.log(data.data[0])
+                        console.log(data.message)
+                        console.log(data.value)
+                        //var html_str = JSON.stringify(data.)
+                        $("#data_div").html(data.message)
+                        $("#message_div").html(data.value)
+                    },
+                    error: function (data, status) {
+                        console.log(data.responseText)
+                        console.log(data.responseJSON)
+                        console.log(data.status)
+                        $("#message_div").html("Row not found")
+                        $("#data_div").html("Error -- Adding row unsuccessful")
+                    }
+                });
+
+                /*
+                 $.post("http://localhost:3000/users", function (data, status) {
+                     $("#message_div").html(status)
+                     console.log(data)
+                     //console.log(message)
+                     //console.log(data.data[0])
+                     console.log(data.message)
+                     console.log(data.value)
+                     //var html_str = JSON.stringify(data.)
+                     $("#data_div").html(data.message)
+                     $("#message_div").html(data.value)
+                 });
+                 */
+            });
+        });
+
+        /*
+                // select one USER EVENT HANDLER
+                $("#addnew_user_id").change(function () {
+                    var the_id = $("#addnew_user_id").val()
+                    $("#data_div").html("Waiting for server reply")
+                    $("#message_div").html("no code")
+                    $.get("http://localhost:3000/users/" + the_id, function (data, status) {
+                        $("#message_div").html(status)
+                        // $("#data_div").html("Server reply received")
+                        // build html ouput for data_div
+                        var html_str = "id " + data.data[0].id + "<br>"
+                        html_str += "username " + data.data[0].username + "<br>"
+                        html_str += "password " + data.data[0].password + "<br>"
+                        $("#data_div").html(html_str)
+                    });
+                    app.post('/users',
+                        function (request, response) {
+                            console.log(request.body.username)
+                            DB.query("INSERT INTO web_users ( username, password ) VALUES ( $1, $2 )", [request.body.username, request.body.password],
+                                function (results) {
+                                    response.send("Row inserted successfully : values")
+                                }
+                            )
+                        }
+                    )
+                });
+        */
+    </script>
+</body>
+
+</html>

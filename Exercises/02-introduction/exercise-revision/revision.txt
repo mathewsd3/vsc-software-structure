@@ -1,0 +1,77 @@
+1) let and const replace which keywords?
+
+Before ES6 2015, there was only var .It has global or function scope.
+let and const is used for block scope.
+Example for(let i=0;i<10;i++){}
+
+2) Describe the difference between the let and const keywords? 
+
+
+Difference: we can assign value to const only once.
+
+Array of 3 objects :
+
+[
+
+
+
+    { email: "martinv@gmail.com", name: "Martin Vachon", age: 45 },
+
+
+
+    { email: "sonia@hotmail.com", name: "Sonia Trudeau", age: 23 },
+
+
+
+    { email: "martinec@gmail.com", name: "Martine Coté", age: 25 }
+
+
+
+]
+
+
+Object inside an object:
+
+{
+
+
+
+    count: 32
+
+
+
+    itemNumber: 2574
+
+
+
+    price: 12.25
+
+
+
+    details: {
+
+
+
+        id: "ARTVV",
+
+
+
+        ref: 129,
+
+
+
+        type: "RT-34"
+
+
+
+    }
+
+
+
+}
+
+4) What is the difference between a static method and a "standard" (non-static) method?
+
+
+JSON.stringify()
+JSON.object() --> static methods, do not require an object
